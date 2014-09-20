@@ -28,16 +28,7 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
 
   function link(scope, el, attrs) {
     var handler,
-        callback,
-        callbackExpr = attrs.stripeCheckout;
-
-    if (!callbackExpr)
-      throw new Error("A stripe-checkout callback expression is required");
-
-    callback = $parse(callbackExpr)(scope);
-
-    if (typeof callback !== "function")
-      throw new Error("Not a function: " + callbackExpr);
+        callback = $parse(attrs.stripeCheckout);
 
     StripeCheckout.load()
       .then(function() {
@@ -45,9 +36,7 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
       });
 
     el.on("click",function() {
-      if (!handler) return;
-
-      handler.open().then(callback);
+      if (handler) handler.open().then(callback(scope));
     });
   }
 

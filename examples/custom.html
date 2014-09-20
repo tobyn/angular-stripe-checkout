@@ -1,4 +1,4 @@
-<html ng-app="complexExample">
+<html ng-app="customExample">
   <head>
     <title>Custom Example - Angular Stripe Checkout</title>
   </head>
@@ -20,7 +20,7 @@
     <script src="../angular-stripe-checkout.js"></script>
 
     <script>
-      angular.module("complexExample",["ngRoute","stripe.checkout"])
+      angular.module("customExample",["ngRoute","stripe.checkout"])
         .config(function($routeProvider, StripeCheckoutProvider) {
           // You can use the provider to set defaults for all handlers
           // you create. Any of the options you'd pass to
