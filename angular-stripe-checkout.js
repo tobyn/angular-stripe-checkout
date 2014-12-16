@@ -108,10 +108,10 @@ function StripeHandlerProxy($q, options) {
       closedCallback = options.closed,
       tokenCallback = options.token;
 
-  options.token = function(token) {
-    if (tokenCallback) tokenCallback(token);
+  options.token = function(token, args) {
+    if (tokenCallback) tokenCallback(token, args);
 
-    deferred.resolve(token);
+    deferred.resolve(arguments);
     setup();
   };
 
@@ -164,7 +164,7 @@ function loadLibrary($document, $q) {
     script.onload = function() {
       resolve();
     }
-    
+
     script.onreadystatechange = function() {
       var rs = this.readyState;
       if (rs === "loaded" || rs === "complete")
