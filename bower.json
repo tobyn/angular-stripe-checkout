@@ -1,7 +1,7 @@
 {
   "name": "angular-stripe-checkout",
   "main": "angular-stripe-checkout.js",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "authors": [
     "Tobyn Baugher <tobynb@gmail.com>"
   ],

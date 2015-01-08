@@ -1,5 +1,7 @@
 (function() {
 
+var extend = angular.extend;
+
 var STRIPE_CHECKOUT_URL = "https://checkout.stripe.com/checkout.js";
 
 var OPTION_ATTRIBUTE_MAP = {
@@ -28,7 +30,7 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
 
   function link(scope, el, attrs) {
     var handler,
-        callback = $parse(attrs.stripeCheckout);
+        callback = $parse(attrs.stripeCheckout)(scope);
 
     StripeCheckout.load()
       .then(function() {
@@ -36,7 +38,10 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
       });
 
     el.on("click",function() {
-      if (handler) handler.open().then(callback(scope));
+      if (handler)
+        handler.open().then(function(result) {
+          callback.apply(null,result);
+        });
     });
   }
 
@@ -83,7 +88,7 @@ function StripeCheckoutService($document, $q, providerDefaults) {
       promise;
 
   this.configure = function(options) {
-    return new StripeHandlerProxy($q,extend({},
+    return new StripeHandlerWrapper($q,extend({},
       providerDefaults,
       defaults,
       options
@@ -103,57 +108,33 @@ function StripeCheckoutService($document, $q, providerDefaults) {
 }
 
 
-function StripeHandlerProxy($q, options) {
-  var deferred, handler, success,
-      closedCallback = options.closed,
-      tokenCallback = options.token;
+function StripeHandlerWrapper($q, options) {
+  var deferred, success;
 
-  options.token = function(token, args) {
-    if (tokenCallback) tokenCallback(token, args);
+  var handler = StripeCheckout.configure(extend({},options,{
+    token: function(token, args) {
+      if (options.token) options.token(token,args);
 
-    deferred.resolve(arguments);
-    setup();
-  };
+      success = true;
+      deferred.resolve([token, args]);
+    },
 
-  options.closed = function() {
-    if (closedCallback) closedCallback();
-
-    if (!success) {
-      deferred.reject();
-      setup();
+    closed: function() {
+      if (options.closed) options.closed();
+      if (!success) deferred.reject();
     }
-  };
-
-  setup();
+  }));
 
   this.open = function(openOptions) {
+    deferred = $q.defer();
+    success = false;
+
     handler.open(openOptions);
+
     return deferred.promise;
   };
-
-  function setup() {
-    deferred = $q.defer();
-    handler = StripeCheckout.configure(options);
-    success = false;
-  }
 }
 
-
-function extend(dest/*, src... */) {
-  var key, src,
-      i = 1,
-      len = arguments.length;
-
-  for (; i < len; i++) {
-    src = arguments[i];
-    for (key in src) {
-      if (src.hasOwnProperty(key))
-        dest[key] = src[key];
-    }
-  }
-
-  return dest;
-}
 
 function loadLibrary($document, $q) {
   return $q(function(resolve, reject) {
