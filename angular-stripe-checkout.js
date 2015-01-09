@@ -144,7 +144,7 @@ function loadLibrary($document, $q) {
 
     script.onload = function() {
       resolve();
-    }
+    };
 
     script.onreadystatechange = function() {
       var rs = this.readyState;
