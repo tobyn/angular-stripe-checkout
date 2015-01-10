@@ -10,7 +10,7 @@ clean:
 	rm -rf $(MINIFIED) $(GZIPPED)
 
 minified:
-	uglifyjs $(BASENAME).js > $(MINIFIED)
+	uglifyjs -m -- $(BASENAME).js > $(MINIFIED)
 
 gzipped: minified
 	gzip -9c $(MINIFIED) > $(GZIPPED)
