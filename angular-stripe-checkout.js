@@ -138,28 +138,30 @@ function StripeHandlerWrapper($q, options) {
 
 
 function loadLibrary($document, $q) {
-  return $q(function(resolve, reject) {
-    var doc = $document[0],
-        script = doc.createElement("script");
-    script.src = STRIPE_CHECKOUT_URL;
+  var deferred = $q.defer();
 
-    script.onload = function() {
-      resolve();
-    };
+  var doc = $document[0],
+      script = doc.createElement("script");
+  script.src = STRIPE_CHECKOUT_URL;
 
-    script.onreadystatechange = function() {
-      var rs = this.readyState;
-      if (rs === "loaded" || rs === "complete")
-        resolve();
-    };
+  script.onload = function () {
+    deferred.resolve();
+  };
 
-    script.onerror = function() {
-      reject(new Error("Unable to load checkout.js"));
-    };
+  script.onreadystatechange = function () {
+    var rs = this.readyState;
+    if (rs === "loaded" || rs === "complete")
+      deferred.resolve();
+  };
 
-    var container = doc.getElementsByTagName("head")[0];
-    container.appendChild(script);
-  });
+  script.onerror = function () {
+    deferred.reject(new Error("Unable to load checkout.js"));
+  };
+
+  var container = doc.getElementsByTagName("head")[0];
+  container.appendChild(script);
+
+  return deferred.promise;
 }
 
 })();
