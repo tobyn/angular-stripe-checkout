@@ -15,8 +15,7 @@ var OPTION_ATTRIBUTE_MAP = {
   panelLabel: "data-panel-label",
   zipCode: "data-zip-code",
   email: "data-email",
-  label: "data-label",
-  allowRememberMe: "data-allow-remember-me"
+  label: "data-label"
 };
 
 angular.module("stripe.checkout",[])
@@ -55,6 +54,9 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
       if (typeof val !== "undefined")
         options[opt] = val;
     }
+
+    options.bitcoin = el.attr("data-bitcoin") == "true";
+    options.allowRememberMe = el.attr("data-allow-remember-me") == "true";
 
     return options;
   }
