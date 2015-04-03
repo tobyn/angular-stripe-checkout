@@ -39,7 +39,7 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
 
     el.on("click",function() {
       if (handler)
-        handler.open().then(function(result) {
+        handler.open(getOptions(el)).then(function(result) {
           callback.apply(null,result);
         });
     });
