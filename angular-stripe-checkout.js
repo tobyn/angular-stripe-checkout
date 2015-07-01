@@ -5,17 +5,25 @@ var extend = angular.extend;
 
 var STRIPE_CHECKOUT_URL = "https://checkout.stripe.com/checkout.js";
 
-var OPTION_ATTRIBUTE_MAP = {
-  key: "data-key",
-  image: "data-image",
-  name: "data-name",
+var COPIED_OPTION_ATTRIBUTES = {
+  key:         "data-key",
+  image:       "data-image",
+  name:        "data-name",
   description: "data-description",
-  amount: "data-amount",
-  currency: "data-currency",
-  panelLabel: "data-panel-label",
-  zipCode: "data-zip-code",
-  email: "data-email",
-  label: "data-label"
+  amount:      "data-amount",
+  currency:    "data-currency",
+  panelLabel:  "data-panel-label",
+  zipCode:     "data-zip-code",
+  email:       "data-email",
+  label:       "data-label"
+};
+
+var BOOLEAN_OPTION_ATTRIBUTES = {
+  bitcoin:         "data-bitcoin",
+  allowRememberMe: "data-allow-remember-me",
+  address:         "data-address",
+  billingAddress:  "data-billingAddress",
+  shippingAddress: "data-shippingAddress"
 };
 
 angular.module("stripe.checkout",[])
@@ -46,17 +54,21 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
   }
 
   function getOptions(el) {
-    var opt, val,
-        options = {};
+    var opt, val, options = {};
 
-    for (opt in OPTION_ATTRIBUTE_MAP) {
-      val = el.attr(OPTION_ATTRIBUTE_MAP[opt]);
+    for (opt in COPIED_OPTION_ATTRIBUTES) {
+      val = el.attr(COPIED_OPTION_ATTRIBUTES[opt]);
+
       if (typeof val !== "undefined")
         options[opt] = val;
     }
 
-    options.bitcoin = el.attr("data-bitcoin") == "true";
-    options.allowRememberMe = el.attr("data-allow-remember-me") == "true";
+    for (opt in BOOLEAN_OPTION_ATTRIBUTES) {
+      val = el.attr(BOOLEAN_OPTION_ATTRIBUTES[opt]);
+
+      if (typeof val === "string")
+        options[opt] = val.toLowerCase() === "true";
+    }
 
     return options;
   }
