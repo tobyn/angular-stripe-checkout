@@ -1,8 +1,8 @@
 {
   "name": "angular-stripe-checkout",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "AngularJS wrapper around Stripe Checkout",
-  "main": "index.js",
+  "main": "angular-stripe-checkout.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tobyn/angular-stripe-checkout.git"
