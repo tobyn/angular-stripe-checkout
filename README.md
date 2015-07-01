@@ -18,5 +18,8 @@ Install
 ```
 bower install angular-stripe-checkout
 ```
+```
+npm install angular-stripe-checkout
+```
 
 Or just download a copy of angular-stripe-checkout.js.

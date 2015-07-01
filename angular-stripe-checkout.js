@@ -1,8 +1,7 @@
 (function() {
 "use strict";
 
-var extend = angular.extend;
-
+var MODULE_NAME = "stripe.checkout";
 var STRIPE_CHECKOUT_URL = "https://checkout.stripe.com/checkout.js";
 
 var COPIED_OPTION_ATTRIBUTES = {
@@ -26,7 +25,19 @@ var BOOLEAN_OPTION_ATTRIBUTES = {
   shippingAddress: "data-shippingAddress"
 };
 
-angular.module("stripe.checkout",[])
+
+var angular;
+
+if (typeof module !== "undefined" && typeof module.exports === "object") {
+  angular = require("angular");
+  module.exports = MODULE_NAME;
+} else {
+  angular = window.angular;
+}
+
+var extend = angular.extend;
+
+angular.module(MODULE_NAME,[])
   .directive("stripeCheckout",StripeCheckoutDirective)
   .provider("StripeCheckout",StripeCheckoutProvider);
 
