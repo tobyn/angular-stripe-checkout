@@ -57,9 +57,6 @@
         .controller("CustomExampleController",function($log, StripeCheckout) {
           // You should configure a handler when the view is loaded,
           // just as you would if you were using checkout.js directly.
-          //
-          // Unlike a vanilla Stripe Checkout handler, this one can be
-          // reused as many times as you like.
           var handler = StripeCheckout.configure({
               name: "Custom Example",
               token: function(token, args) {
