@@ -159,6 +159,15 @@ function StripeHandlerWrapper($q, options) {
 
     return deferred.promise;
   };
+
+  this.close = function() {
+    success = false;
+
+    handler.close();
+
+    if (options.closed) options.closed();
+    if (deferred) deferred.reject();
+  }
 }
 
 
