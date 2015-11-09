@@ -48,8 +48,7 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
   return { link: link };
 
   function link(scope, el, attrs) {
-    var handler,
-        callback = $parse(attrs.stripeCheckout)(scope);
+    var handler;
 
     StripeCheckout.load()
       .then(function() {
@@ -59,7 +58,9 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
     el.on("click",function() {
       if (handler)
         handler.open(getOptions(el)).then(function(result) {
-          callback.apply(null,result);
+          var callback = $parse(attrs.stripeCheckout)(scope);
+          if (typeof callback === 'function')
+            callback.apply(null,result);
         });
     });
   }
