@@ -5,24 +5,27 @@ var MODULE_NAME = "stripe.checkout";
 var STRIPE_CHECKOUT_URL = "https://checkout.stripe.com/checkout.js";
 
 var COPIED_OPTION_ATTRIBUTES = {
-  key:         "data-key",
-  image:       "data-image",
-  name:        "data-name",
-  description: "data-description",
   amount:      "data-amount",
   currency:    "data-currency",
-  panelLabel:  "data-panel-label",
-  zipCode:     "data-zip-code",
+  description: "data-description",
   email:       "data-email",
-  label:       "data-label"
+  image:       "data-image",
+  key:         "data-key",
+  label:       "data-label",
+  locale:      "data-locale",
+  name:        "data-name",
+  panelLabel:  "data-panel-label",
+  zipCode:     "data-zip-code"
 };
 
 var BOOLEAN_OPTION_ATTRIBUTES = {
-  bitcoin:         "data-bitcoin",
-  allowRememberMe: "data-allow-remember-me",
   address:         "data-address",
-  billingAddress:  "data-billingAddress",
-  shippingAddress: "data-shippingAddress"
+  alipay:          "data-alipay",
+  alipayReusable:  "data-alipay-reusable",
+  allowRememberMe: "data-allow-remember-me",
+  billingAddress:  "data-billing-address",
+  bitcoin:         "data-bitcoin",
+  shippingAddress: "data-shipping-address"
 };
 
 
