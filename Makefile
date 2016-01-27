@@ -4,7 +4,7 @@ BASENAME=angular-stripe-checkout
 MINIFIED=$(BASENAME).min.js
 GZIPPED=$(MINIFIED).gz
 
-all: minified gzipped
+all: minified
 
 clean:
 	rm -rf $(MINIFIED) $(GZIPPED)
