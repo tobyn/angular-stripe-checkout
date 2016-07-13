@@ -1,6 +1,6 @@
 {
   "name": "angular-stripe-checkout",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "AngularJS wrapper around Stripe Checkout",
   "main": "angular-stripe-checkout.js",
   "repository": {

@@ -1,38 +1,39 @@
 (function() {
-"use strict";
+/* global StripeCheckout */
+'use strict';
 
-var MODULE_NAME = "stripe.checkout";
-var STRIPE_CHECKOUT_URL = "https://checkout.stripe.com/checkout.js";
+var MODULE_NAME = 'stripe.checkout';
+var STRIPE_CHECKOUT_URL = 'https://checkout.stripe.com/checkout.js';
 
 var COPIED_OPTION_ATTRIBUTES = {
-  amount:      "data-amount",
-  currency:    "data-currency",
-  description: "data-description",
-  email:       "data-email",
-  image:       "data-image",
-  key:         "data-key",
-  label:       "data-label",
-  locale:      "data-locale",
-  name:        "data-name",
-  panelLabel:  "data-panel-label",
-  zipCode:     "data-zip-code"
+  amount:      'data-amount',
+  currency:    'data-currency',
+  description: 'data-description',
+  email:       'data-email',
+  image:       'data-image',
+  key:         'data-key',
+  label:       'data-label',
+  locale:      'data-locale',
+  name:        'data-name',
+  panelLabel:  'data-panel-label',
+  zipCode:     'data-zip-code'
 };
 
 var BOOLEAN_OPTION_ATTRIBUTES = {
-  address:         "data-address",
-  alipay:          "data-alipay",
-  alipayReusable:  "data-alipay-reusable",
-  allowRememberMe: "data-allow-remember-me",
-  billingAddress:  "data-billing-address",
-  bitcoin:         "data-bitcoin",
-  shippingAddress: "data-shipping-address"
+  address:         'data-address',
+  alipay:          'data-alipay',
+  alipayReusable:  'data-alipay-reusable',
+  allowRememberMe: 'data-allow-remember-me',
+  billingAddress:  'data-billing-address',
+  bitcoin:         'data-bitcoin',
+  shippingAddress: 'data-shipping-address'
 };
 
 
 var angular;
 
-if (typeof module !== "undefined" && typeof module.exports === "object") {
-  angular = require("angular");
+if (typeof module !== 'undefined' && typeof module.exports === 'object') {
+  angular = require('angular');
   module.exports = MODULE_NAME;
 } else {
   angular = window.angular;
@@ -41,11 +42,11 @@ if (typeof module !== "undefined" && typeof module.exports === "object") {
 var extend = angular.extend;
 
 angular.module(MODULE_NAME,[])
-  .directive("stripeCheckout",StripeCheckoutDirective)
-  .provider("StripeCheckout",StripeCheckoutProvider);
+  .directive('stripeCheckout',StripeCheckoutDirective)
+  .provider('StripeCheckout',StripeCheckoutProvider);
 
 
-StripeCheckoutDirective.$inject = ["$parse", "StripeCheckout"];
+StripeCheckoutDirective.$inject = ['$parse', 'StripeCheckout'];
 
 function StripeCheckoutDirective($parse, StripeCheckout) {
   return { link: link };
@@ -58,7 +59,7 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
         handler = StripeCheckout.configure(getOptions(el));
       });
 
-    el.on("click",function() {
+    el.on('click',function() {
       if (handler)
         handler.open(getOptions(el)).then(function(result) {
           var callback = $parse(attrs.stripeCheckout)(scope);
@@ -74,15 +75,15 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
     for (opt in COPIED_OPTION_ATTRIBUTES) {
       val = el.attr(COPIED_OPTION_ATTRIBUTES[opt]);
 
-      if (typeof val !== "undefined")
+      if (typeof val !== 'undefined')
         options[opt] = val;
     }
 
     for (opt in BOOLEAN_OPTION_ATTRIBUTES) {
       val = el.attr(BOOLEAN_OPTION_ATTRIBUTES[opt]);
 
-      if (typeof val === "string")
-        options[opt] = val.toLowerCase() === "true";
+      if (typeof val === 'string')
+        options[opt] = val.toLowerCase() === 'true';
     }
 
     return options;
@@ -102,20 +103,20 @@ function StripeCheckoutProvider() {
     return StripeCheckout.load();
   };
 
-  this.load.$inject = ["StripeCheckout"];
+  this.load.$inject = ['StripeCheckout'];
 
 
   this.$get = function($document, $q) {
     return new StripeCheckoutService($document,$q,defaults);
   };
 
-  this.$get.$inject = ["$document", "$q"];
+  this.$get.$inject = ['$document', '$q'];
 }
 
 
 function StripeCheckoutService($document, $q, providerDefaults) {
-  var defaults = {},
-      promise;
+  var defaults = {};
+  var promise;
 
   this.configure = function(options) {
     return new StripeHandlerWrapper($q,extend({},
@@ -171,15 +172,15 @@ function StripeHandlerWrapper($q, options) {
 
     if (options.closed) options.closed();
     if (deferred) deferred.reject();
-  }
+  };
 }
 
 
 function loadLibrary($document, $q) {
   var deferred = $q.defer();
 
-  var doc = $document[0],
-      script = doc.createElement("script");
+  var doc = $document[0];
+  var script = doc.createElement('script');
   script.src = STRIPE_CHECKOUT_URL;
 
   script.onload = function () {
@@ -188,15 +189,15 @@ function loadLibrary($document, $q) {
 
   script.onreadystatechange = function () {
     var rs = this.readyState;
-    if (rs === "loaded" || rs === "complete")
+    if (rs === 'loaded' || rs === 'complete')
       deferred.resolve();
   };
 
   script.onerror = function () {
-    deferred.reject(new Error("Unable to load checkout.js"));
+    deferred.reject(new Error('Unable to load checkout.js'));
   };
 
-  var container = doc.getElementsByTagName("head")[0];
+  var container = doc.getElementsByTagName('head')[0];
   container.appendChild(script);
 
   return deferred.promise;
