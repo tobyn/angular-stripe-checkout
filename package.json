@@ -12,5 +12,16 @@
   "bugs": {
     "url": "https://github.com/tobyn/angular-stripe-checkout/issues"
   },
-  "homepage": "https://github.com/tobyn/angular-stripe-checkout#readme"
+  "homepage": "https://github.com/tobyn/angular-stripe-checkout#readme",
+  "devDependencies": {
+    "eslint": "^3.3.1",
+    "serve-static": "^1.11.1",
+    "wdio-mocha-framework": "^0.4.0",
+    "wdio-spec-reporter": "0.0.3",
+    "webdriverio": "^4.2.7"
+  },
+  "scripts": {
+    "lint": "eslint angular-stripe-checkout.js test/*.js",
+    "test": "node test/runner.js"
+  }
 }
