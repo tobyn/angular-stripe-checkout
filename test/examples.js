@@ -84,5 +84,5 @@ function waitForTokenAlert() {
     } catch (e) {
       return false;
     }
-  },10000,'Expected an alert with the stripe token');
+  },10000,'Expected an alert with the Stripe token');
 }
