@@ -5,28 +5,25 @@
 var MODULE_NAME = 'stripe.checkout';
 var STRIPE_CHECKOUT_URL = 'https://checkout.stripe.com/checkout.js';
 
-var COPIED_OPTION_ATTRIBUTES = {
-  amount:      'data-amount',
-  currency:    'data-currency',
-  description: 'data-description',
-  email:       'data-email',
-  image:       'data-image',
-  key:         'data-key',
-  label:       'data-label',
-  locale:      'data-locale',
-  name:        'data-name',
-  panelLabel:  'data-panel-label',
-  zipCode:     'data-zip-code'
-};
-
-var BOOLEAN_OPTION_ATTRIBUTES = {
-  address:         'data-address',
-  alipay:          'data-alipay',
-  alipayReusable:  'data-alipay-reusable',
-  allowRememberMe: 'data-allow-remember-me',
-  billingAddress:  'data-billing-address',
-  bitcoin:         'data-bitcoin',
-  shippingAddress: 'data-shipping-address'
+var OPTIONS = {
+  address:         ['data-address', 'boolean'],
+  alipay:          ['data-alipay', 'boolean-or-auto'],
+  alipayReusable:  ['data-alipay-reusable', 'boolean'],
+  allowRememberMe: ['data-allow-remember-me', 'boolean'],
+  amount:          ['data-amount', 'number'],
+  billingAddress:  ['data-billing-address', 'boolean'],
+  bitcoin:         ['data-bitcoin', 'boolean'],
+  currency:        ['data-currency', 'string'],
+  description:     ['data-description', 'string'],
+  email:           ['data-email', 'string'],
+  image:           ['data-image', 'string'],
+  key:             ['data-key', 'string'],
+  label:           ['data-label', 'string'],
+  locale:          ['data-locale', 'string'],
+  name:            ['data-name', 'string'],
+  panelLabel:      ['data-panel-label', 'string'],
+  shippingAddress: ['data-shipping-address', 'boolean'],
+  zipCode:         ['data-zip-code', 'boolean']
 };
 
 
@@ -67,26 +64,6 @@ function StripeCheckoutDirective($parse, StripeCheckout) {
             callback.apply(null,result);
         });
     });
-  }
-
-  function getOptions(el) {
-    var opt, val, options = {};
-
-    for (opt in COPIED_OPTION_ATTRIBUTES) {
-      val = el.attr(COPIED_OPTION_ATTRIBUTES[opt]);
-
-      if (typeof val !== 'undefined')
-        options[opt] = val;
-    }
-
-    for (opt in BOOLEAN_OPTION_ATTRIBUTES) {
-      val = el.attr(BOOLEAN_OPTION_ATTRIBUTES[opt]);
-
-      if (typeof val === 'string')
-        options[opt] = val.toLowerCase() === 'true';
-    }
-
-    return options;
   }
 }
 
@@ -176,6 +153,23 @@ function StripeHandlerWrapper($q, options) {
 }
 
 
+function getOptions(el) {
+  var opt, def, val, options = {};
+
+  for (opt in OPTIONS) {
+    if (!OPTIONS.hasOwnProperty(opt))
+      continue;
+
+    def = OPTIONS[opt];
+    val = parseValue(el.attr(def[0]),def[1]);
+
+    if (val != null)
+      options[opt] = val;
+  }
+
+  return options;
+}
+
 function loadLibrary($document, $q) {
   var deferred = $q.defer();
 
@@ -201,6 +195,21 @@ function loadLibrary($document, $q) {
   container.appendChild(script);
 
   return deferred.promise;
+}
+
+function parseValue(value, type) {
+  if (type === 'boolean') {
+    return value && value !== 'false';
+  } else if (type === 'number') {
+    return value && Number(value);
+  } else if (type === 'boolean-or-auto') {
+    if (value === 'auto')
+      return value;
+    else
+      return parseValue(value,'boolean');
+  } else {
+    return value;
+  }
 }
 
 })();

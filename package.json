@@ -1,6 +1,6 @@
 {
   "name": "angular-stripe-checkout",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "description": "AngularJS wrapper around Stripe Checkout",
   "main": "angular-stripe-checkout.js",
   "repository": {
@@ -16,12 +16,14 @@
   "devDependencies": {
     "eslint": "^3.3.1",
     "serve-static": "^1.11.1",
+    "uglify-js": "^2.7.3",
     "wdio-mocha-framework": "^0.4.0",
     "wdio-spec-reporter": "0.0.3",
     "webdriverio": "^4.2.7"
   },
   "scripts": {
     "lint": "eslint angular-stripe-checkout.js test/*.js",
-    "test": "node test/runner.js"
+    "test": "node test/runner.js",
+    "uglify": "uglifyjs angular-stripe-checkout.js -m -o angular-stripe-checkout.min.js"
   }
 }
