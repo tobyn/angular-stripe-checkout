@@ -21,6 +21,7 @@ var OPTIONS = {
   label:           ['data-label', 'string'],
   locale:          ['data-locale', 'string'],
   name:            ['data-name', 'string'],
+  color:           ['data-color', 'string'],
   panelLabel:      ['data-panel-label', 'string'],
   shippingAddress: ['data-shipping-address', 'boolean'],
   zipCode:         ['data-zip-code', 'boolean']
