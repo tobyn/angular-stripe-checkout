@@ -11,7 +11,7 @@ describe('The simple example', function() {
     browser.click('button');
 
     browser.frame('stripe_checkout_app');
-    browser.waitForVisible('h1');
+    browser.waitForVisible('input[placeholder=Email]');
 
     assert.equal(browser.getText('h1'), 'Simple Example');
     assert.equal(browser.getText('h2'), 'Five dollahs!');
@@ -63,16 +63,16 @@ describe('The custom example', function() {
 
 function fillStripeCheckout() {
   browser.setValue(
-    'input[autocomplete=email]',
+    'input[placeholder=Email]',
     'test-angular-stripe-checkout@example.com');
 
-  browser.addValue('input[autocomplete=cc-number]', '4242');
-  browser.addValue('input[autocomplete=cc-number]', '4242');
-  browser.addValue('input[autocomplete=cc-number]', '4242');
-  browser.addValue('input[autocomplete=cc-number]', '4242');
+  browser.addValue('input[placeholder="Card number"]', '4242');
+  browser.addValue('input[placeholder="Card number"]', '4242');
+  browser.addValue('input[placeholder="Card number"]', '4242');
+  browser.addValue('input[placeholder="Card number"]', '4242');
 
-  browser.addValue('input[autocomplete=cc-exp]', '12');
-  browser.addValue('input[autocomplete=cc-exp]', '60');
+  browser.addValue('input[placeholder="MM / YY"]', '12');
+  browser.addValue('input[placeholder="MM / YY"]', '60');
 
   browser.setValue('input[placeholder=CVC]', '123');
 
